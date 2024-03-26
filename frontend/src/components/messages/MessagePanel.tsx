@@ -34,7 +34,7 @@ export const MessagePanel: FC<Props> = ({
     sendTypingStatus,
     isRecipientTyping,
 }) => {
-    const toastId = 'rateLimitToast';
+    // const toastId = 'rateLimitToast';
     const dispatch = useDispatch();
     // const { messageCounter } = useSelector(
     //     (state: RootState) => state.systemMessages

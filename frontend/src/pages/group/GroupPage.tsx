@@ -4,7 +4,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import ConversationPanel from '../../components/conversations/ConversationPanel';
 import ConversationSidebar from '../../components/conversations/ConversationSidebar';
 import { AppDispatch } from '../../store';
-// import { addGroupMessage } from '../../store/groupMessageSlice';
+import { addGroupMessage } from '../../store/groupMessagesSlice';
 import {
   addGroup,
   fetchGroupsThunk,
@@ -50,20 +50,21 @@ export const GroupPage = () => {
   }, []);
 
   useEffect(() => {
-    const channel = pusher.subscribe('1');
-    channel.bind('createGroupMessage', (payload: GroupMessageEventPayload) => {
-      const { group } = payload;
-      //dispatch(addGroupMessage(payload));
-      toast.success("ok")
-      dispatch(updateGroup({ type: UpdateGroupAction.NEW_MESSAGE, group }));
-    });
+    if (id) {
+      const channel = pusher.subscribe(id);
+      channel.bind('createGroupMessage', (payload: GroupMessageEventPayload) => {
+        const { group } = payload;
+        dispatch(addGroupMessage(payload));
+        dispatch(updateGroup({ type: UpdateGroupAction.NEW_MESSAGE, group }));
+      });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-      pusher.disconnect();
-    };
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
+        pusher.disconnect();
+      };
 
+    }
 
     // socket.on('onGroupCreate', (payload: Group) => {
     //   console.log('Group Created...');

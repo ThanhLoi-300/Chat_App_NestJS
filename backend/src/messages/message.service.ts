@@ -7,14 +7,16 @@ import { Repository } from 'typeorm';
 import { Services } from 'src/utils/constants';
 import { IConversationsService } from 'src/conversations/conversation';
 import { instanceToPlain } from 'class-transformer';
+import { IFriendsService } from 'src/friends/friends';
+import { IMessageAttachmentsService } from 'src/message-attachments/message-attachments';
 
 @Injectable()
 export class MessageService implements IMessageService{
     constructor(
         @InjectRepository(Message) private readonly messageRepository: Repository<Message>,
         @Inject(Services.CONVERSATIONS) private readonly conversationService: IConversationsService,
-        //@Inject(Services.MESSAGE_ATTACHMENTS) private readonly messageAttachmentsService: IMessageAttachmentsService,
-        //@Inject(Services.FRIENDS_SERVICE) private readonly friendsService: IFriendsService,
+        @Inject(Services.MESSAGE_ATTACHMENTS) private readonly messageAttachmentsService: IMessageAttachmentsService,
+        @Inject(Services.FRIENDS_SERVICE) private readonly friendsService: IFriendsService,
     ) { }
     
     async createMessage(params: CreateMessageParams): Promise<Message> {
@@ -24,9 +26,9 @@ export class MessageService implements IMessageService{
         // if (!conversation) throw new ConversationNotFoundException();
 
         const { creator, recipient } = conversation;
-        // const isFriends = await this.friendsService.isFriends(
-        //     creator.id, recipient.id,
-        // );
+        const isFriends = await this.friendsService.isFriends(
+            creator.id, recipient.id,
+        );
 
         // if (!isFriends) throw new FriendNotFoundException();
 
@@ -36,10 +38,9 @@ export class MessageService implements IMessageService{
             content,
             conversation,
             author: instanceToPlain(user),
-            // attachments: params.attachments
-            //             ? await this.messageAttachmentsService.create(params.attachments)
-            //             : [],
-            attachments: []
+            attachments: params.attachments
+                        ? await this.messageAttachmentsService.create(params.attachments)
+                        : [],
         });
 
         const savedMessage = await this.messageRepository.save(message);
@@ -55,8 +56,7 @@ export class MessageService implements IMessageService{
 
     getMessages(conversationId: number): Promise<Message[]> {
         return this.messageRepository.find({
-            // relations: ['author', 'attachments', 'author.profile'],
-            relations: ['author', 'attachments'],
+            relations: ['author', 'attachments', 'author.profile'],
             where: { conversation: { id: conversationId } },
             order: { createdAt: 'DESC' },
         });
@@ -108,7 +108,7 @@ export class MessageService implements IMessageService{
             'conversation.creator',
             'conversation.recipient',
             'author',
-            // 'author.profile',
+            'author.profile',
         ],
         });
         // if (!messageDB)

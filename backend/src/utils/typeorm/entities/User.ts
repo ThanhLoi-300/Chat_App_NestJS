@@ -11,7 +11,7 @@ import {
 import { Group } from './Group';
 import { Message } from './Message';
 // import { Peer } from './Peer';
-// import { Profile } from './Profile';
+import { Profile } from './Profile';
 // import { UserPresence } from './UserPresence';
 
 @Entity({ name: 'users' })
@@ -36,9 +36,9 @@ export class User {
   @ManyToMany(() => Group, (group) => group.users)
   groups: Group[];
 
-//   @OneToOne(() => Profile, { cascade: ['insert', 'update'] })
-//   @JoinColumn()
-//   profile: Profile;
+  @OneToOne(() => Profile, { cascade: ['insert', 'update'] })
+  @JoinColumn()
+  profile: Profile;
 
 //   @OneToOne(() => UserPresence, { cascade: ['insert', 'update'] })
 //   @JoinColumn()

@@ -58,10 +58,9 @@ export class GroupMessageController {
     const response = await this.groupMessageService.createGroupMessage(params);
 
     const pusher: Pusher = this.pusherHelper.getPusherInstance();
-    pusher.trigger('1', 'createGroupMessage', response)
-    console.log(response)
+    pusher.trigger(id.toString(), 'createGroupMessage', response)
     
-    this.eventEmitter.emit('group.message.create', response);
+    //this.eventEmitter.emit('group.message.create', response);
     return;
   }
 

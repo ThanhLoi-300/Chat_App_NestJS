@@ -10,6 +10,7 @@ export type InputContainerProps = Partial<{
 
 export type MessageItemContentProps = Partial<{
   padding: string;
+  owner: boolean;
 }>;
 
 export type ContextMenuProps = {
@@ -31,6 +32,10 @@ export type CharacterLimitProps = {
 
 export type MessageInputContainerProps = {
   isMultiLine: boolean;
+};
+
+export type MessageOwnerProps = {
+  owner: boolean;
 };
 
 export type ConversationSidebarItemProps = {

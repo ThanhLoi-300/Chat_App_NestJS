@@ -1,6 +1,6 @@
 import { useRef, useEffect, FC } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch, RootState } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store';
 import {
     MessageAttachmentContainerStyle,
     MessageAttachmentStyle,
@@ -12,7 +12,7 @@ import { Attachment } from '../../../utils/types';
 
 export const MessageAttachmentContainer = () => {
     // const { attachments } = useSelector((state: RootState) => state.messagePanel);
-    // const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
     const attachments: Attachment[] = []
     const onDeleteAttachment = (attachment: Attachment) => {
         //dispatch(removeAttachment(attachment));

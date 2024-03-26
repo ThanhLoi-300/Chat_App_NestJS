@@ -100,7 +100,7 @@ const ConversationSidebar = () => {
                                     conversation={conversation}
                                 />
                             ))
-                            : groups.map((group) => (
+                            : groups.map((group: Group) => (
                                 <GroupSidebarItem
                                     key={group.id}
                                     group={group}

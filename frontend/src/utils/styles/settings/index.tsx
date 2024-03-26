@@ -46,8 +46,8 @@ export const UserAvatarContainer = styled.div<{ url?: string }>`
   border-radius: 100%;
   border: 4px solid #afafaf;
   ${({ url }) =>
-        url
-            ? css`
+    url
+      ? css`
           transition: 1s background ease;
           background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
             url('${url}') no-repeat center;
@@ -58,7 +58,7 @@ export const UserAvatarContainer = styled.div<{ url?: string }>`
             opacity: 100%;
           }
         `
-            : css`
+      : css`
           background-color: #404040;
         `};
   cursor: pointer;
@@ -83,11 +83,11 @@ export const UserAvatarContainer = styled.div<{ url?: string }>`
 
 export const SettingsProfileBanner = styled.div<UserBannerProps>`
   width: 100%;
-  height: 300px;
+  height: 200px;
   cursor: pointer;
   ${({ backgroundUrl }) =>
-        backgroundUrl
-            ? css`
+    backgroundUrl
+      ? css`
           transition: 1s background ease;
           background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
             url('${backgroundUrl}') no-repeat center;
@@ -98,14 +98,14 @@ export const SettingsProfileBanner = styled.div<UserBannerProps>`
             opacity: 100%;
           }
         `
-            : css`
+      : css`
           background-color: #404040;
         `}
   &::before {
     background-color: none;
     content: 'Change Banner';
     width: 100%;
-    height: 300px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;

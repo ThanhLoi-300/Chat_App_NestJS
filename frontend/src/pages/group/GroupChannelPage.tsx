@@ -5,16 +5,20 @@ import { MessagePanel } from '../../components/messages/MessagePanel';
 import { SocketContext } from '../../utils/context/SocketContext';
 import { ConversationChannelPageStyle } from '../../utils/styles';
 import { AppDispatch, RootState } from '../../store';
-// import {
-//     editGroupMessage,
-//     fetchGroupMessagesThunk,
-// } from '../../store/groupMessageSlice';
+import {
+    editGroupMessage,
+    fetchGroupMessagesThunk,
+} from '../../store/groupMessagesSlice';
 import { GroupMessageType } from '../../utils/types';
 import { GroupRecipientsSidebar } from '../../components/sidebars/group-recipients/GroupRecipientsSidebar';
-// import { EditGroupModal } from '../../components/modals/EditGroupModal';
+//import { EditGroupModal } from '../../components/modals/EditGroupModal';
+import Pusher from 'pusher-js';
 
 export const GroupChannelPage = () => {
     const { id } = useParams();
+    const pusher = new Pusher('00806514f90cf476dcd8', {
+        cluster: 'ap1',
+    });
     const socket = useContext(SocketContext);
     const dispatch = useDispatch<AppDispatch>();
     const [isRecipientTyping, setIsRecipientTyping] = useState(false);
@@ -28,7 +32,7 @@ export const GroupChannelPage = () => {
 
     useEffect(() => {
         const groupId = parseInt(id!);
-        //dispatch(fetchGroupMessagesThunk(groupId));
+        dispatch(fetchGroupMessagesThunk(groupId));
     }, [id]);
 
     useEffect(() => {
@@ -38,7 +42,7 @@ export const GroupChannelPage = () => {
         socket.on('onGroupMessageUpdate', (message: GroupMessageType) => {
             console.log('onGroupMessageUpdate received');
             console.log(message);
-            //dispatch(editGroupMessage(message));
+            dispatch(editGroupMessage(message));
         });
         return () => {
             socket.emit('onGroupLeave', { groupId });

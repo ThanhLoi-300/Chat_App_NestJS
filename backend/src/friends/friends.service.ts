@@ -20,8 +20,8 @@ export class FriendsService implements IFriendsService {
         'receiver',
         'sender.profile',
         'receiver.profile',
-        'receiver.presence',
-        'sender.presence',
+        //'receiver.presence',
+        //'sender.presence',
       ],
     });
   }
@@ -32,9 +32,9 @@ export class FriendsService implements IFriendsService {
         'sender',
         'receiver',
         'sender.profile',
-        'sender.presence',
+        // 'sender.presence',
         'receiver.profile',
-        'receiver.presence',
+        // 'receiver.presence',
       ],
     });
   }

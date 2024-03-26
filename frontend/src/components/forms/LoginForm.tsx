@@ -3,9 +3,11 @@ import { Button, InputContainer, InputField, InputLabel } from '../../utils/styl
 import styles from './index.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { postLoginUser } from '../../utils/api'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false)
     const init = {
         email: '', password: ''
     }
@@ -35,7 +37,22 @@ const LoginForm = () => {
             </InputContainer>
             <InputContainer>
                 <InputLabel htmlFor='password'>Password</InputLabel>
-                <InputField type="password" id='password' name='password' value={info.password} required onChange={onChange} />
+                <div className={styles.passwordContainer}>
+                    <InputField type={showPassword ? 'text' : 'password'} id='password' name='password' value={info.password} required onChange={onChange} />
+                    {showPassword ? (
+                        <AiFillEyeInvisible
+                            size={24}
+                            onClick={() => setShowPassword(false)}
+                            cursor="pointer"
+                        />
+                    ) : (
+                        <AiFillEye
+                            size={24}
+                            onClick={() => setShowPassword(true)}
+                            cursor="pointer"
+                        />
+                    )}
+                </div>
             </InputContainer>
             <Button className={styles.button}>Login</Button>
             <div className={styles.footerText}>

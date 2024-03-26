@@ -10,12 +10,14 @@ type Props = {
     message: MessageType | GroupMessageType;
     onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     padding: string;
+    owner: boolean;
 };
 
 export const MessageItemContainerBody: FC<Props> = ({
     message,
     onEditMessageChange,
     padding,
+    owner
 }) => {
     const { isEditingMessage, messageBeingEdited } = useSelector(
         (state: RootState) => state.messageContainer
@@ -24,11 +26,11 @@ export const MessageItemContainerBody: FC<Props> = ({
     return (
         <>
             {isEditingMessage && message.id === messageBeingEdited?.id ? (
-                <MessageItemContent padding={padding}>
+                <MessageItemContent padding={padding} owner={owner}>
                     <EditMessageContainer onEditMessageChange={onEditMessageChange} />
                 </MessageItemContent>
             ) : (
-                <MessageItemContent padding={padding}>
+                <MessageItemContent padding={padding} owner={owner }>
                     {message.content || null}
                     <MessageItemAttachmentContainer message={message} />
                 </MessageItemContent>

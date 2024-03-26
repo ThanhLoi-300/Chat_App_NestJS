@@ -17,10 +17,11 @@ import { GroupPageGuard } from './guards/GroupPageGuard';
 import { AppPage } from './pages/AppPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { PusherContext, PusherProvider } from "./utils/context/PusherContext";
-import Pusher from 'pusher-js';
 import { FriendsLayoutPage } from "./pages/friends/FriendsLayoutPage";
 import { FriendRequestPage } from "./pages/friends/FriendRequestPage";
+import { SettingsPage } from './pages/settings/SettingsPage';
+import { SettingsProfilePage } from './pages/settings/SettingsProfilePage';
+import { SettingsAppearancePage } from './pages/settings/SettingsAppearancePage';
 
 enableMapSet()
 
@@ -66,6 +67,10 @@ function App() {
               <Route path="friends" element={<FriendsLayoutPage />}>
                 <Route path="requests" element={<FriendRequestPage />} />
                 <Route path="blocked" element={<div>Blocked</div>} />
+              </Route>
+              <Route path="settings" element={<SettingsPage />}>
+                <Route path="profile" element={<SettingsProfilePage />} />
+                <Route path="appearance" element={<SettingsAppearancePage />} />
               </Route>
             </Route>
           </Routes>

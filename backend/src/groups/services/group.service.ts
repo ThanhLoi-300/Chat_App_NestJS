@@ -48,7 +48,7 @@ export class GroupService implements IGroupService {
       .leftJoinAndSelect('group.creator', 'creator')
       .leftJoinAndSelect('group.owner', 'owner')
       .leftJoinAndSelect('group.lastMessageSent', 'lastMessageSent')
-      // .leftJoinAndSelect('users.profile', 'usersProfile')
+      .leftJoinAndSelect('users.profile', 'usersProfile')
       // .leftJoinAndSelect('users.presence', 'usersPresence')
       .orderBy('group.lastMessageSentAt', 'DESC')
       .getMany();
@@ -62,7 +62,7 @@ export class GroupService implements IGroupService {
         'users',
         'lastMessageSent',
         'owner',
-        // 'users.profile',
+        'users.profile',
         // 'users.presence',
       ],
     });

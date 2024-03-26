@@ -1,7 +1,7 @@
 import {
   Conversation,
-  // Friend,
-  // FriendRequest,
+  Friend,
+  FriendRequest,
   Group,
   GroupMessage,
   GroupMessageAttachment,

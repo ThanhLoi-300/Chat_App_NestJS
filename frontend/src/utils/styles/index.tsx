@@ -11,9 +11,10 @@ import {
   MessageItemContentProps,
   PageProps,
   SidebarItemProps,
+  MessageOwnerProps
 } from './styleTypes';
 
-export const SIDEBAR_WIDTH = 350;
+export const SIDEBAR_WIDTH = 280;
 
 export const InputField = styled.input`
   font-family: 'Inter';
@@ -97,7 +98,7 @@ export const Button = styled.button`
 export const Page = styled.div<PageProps>`
   background-color: #1a1a1a;
   height: 100%;
-  width: 500px;
+  width: 100%;
   display: ${(props) => props.display};
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
@@ -334,12 +335,14 @@ export const MessageInput = styled.input`
   resize: none;
 `;
 
-export const MessageItemContainer = styled.div`
+export const MessageItemContainer = styled.div<MessageOwnerProps>`
   display: flex;
   gap: 20px;
   align-items: center;
   padding: 5px 0;
   word-break: break-word;
+  width: 55%;
+  margin-left: ${({ owner }) => (owner ? 'auto' : 0)} ;
 `;
 
 export const UserAvatarContainer = styled.img`
@@ -363,9 +366,7 @@ export const MessageItemDetails = styled.div`
 `;
 
 export const MessageItemHeaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: block;
   .time {
     color: #6d6d6d;
     font-size: 14px;
@@ -381,6 +382,8 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   padding: ${({ padding }) => padding};
   width: 100%;
   white-space: pre-wrap;
+  display: flex;
+  justify-content: ${({ owner }) => (owner ? 'flex-end' : 'flex-start')};
 `;
 
 export const ContextMenu = styled.ul<ContextMenuProps>`
@@ -650,7 +653,7 @@ export const UserSidebarStyle = styled.div`
 export const SidebarStyle = styled.div`
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: ${SIDEBAR_WIDTH}px;
   height: 100%;
   left: 70px;
 
