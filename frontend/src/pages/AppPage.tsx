@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { UserSidebar } from '../components/sidebars/UserSidebar';
 import { AppDispatch, RootState } from '../store';
-// import { removeFriendRequest } from '../store/friends/friendsSlice';
-import { SocketContext } from '../utils/context/SocketContext';
+import { removeFriendRequest } from '../store/friends/friendsSlice';
 // import { useToast } from '../utils/hooks/useToast';
 import { LayoutPage } from '../utils/styles';
 import {
@@ -13,7 +12,7 @@ import {
     SelectableTheme,
 } from '../utils/types';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
-// import { fetchFriendRequestThunk } from '../store/friends/friendsThunk';
+import { fetchFriendRequestThunk } from '../store/friends/friendsThunk';
 import { ThemeProvider } from 'styled-components';
 import { DarkTheme, LightTheme } from '../utils/themes';
 // import Peer from 'peerjs';
@@ -42,11 +41,11 @@ export const AppPage = () => {
     // const { peer, call, isReceivingCall, caller, connection, callType } =
     //     useSelector((state: RootState) => state.call);
     // const { info } = useToast({ theme: 'dark' });
-    // const { theme } = useSelector((state: RootState) => state.settings);
-    const theme = "dark"
+    const { theme } = useSelector((state: RootState) => state.settings);
+
     const storageTheme = localStorage.getItem('theme') as SelectableTheme;
     useEffect(() => {
-        //dispatch(fetchFriendRequestThunk());
+        dispatch(fetchFriendRequestThunk());
     }, [dispatch]);
 
     useEffect(() => {
@@ -183,13 +182,7 @@ export const AppPage = () => {
     return (
         <ThemeProvider
             theme={
-                storageTheme
-                    ? storageTheme === 'dark'
-                        ? DarkTheme
-                        : LightTheme
-                    : theme === 'dark'
-                        ? DarkTheme
-                        : LightTheme
+                storageTheme ? storageTheme === 'dark' ? DarkTheme : LightTheme : theme === 'dark' ? DarkTheme : LightTheme
             }
         >
             {/* {isReceivingCall && caller && <CallReceiveDialog />} */}

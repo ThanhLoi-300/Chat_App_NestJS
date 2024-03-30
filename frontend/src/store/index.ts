@@ -9,6 +9,8 @@ import groupSidebarReducer from './groupRecipientsSidebarSlice';
 import friendsReducer from './friends/friendsSlice';
 import rateLimitReducer from './rate-limit/rateLimitSlice';
 import settingsReducer from './settings/settingsSlice';
+import systemMessageReducer from './system-messages/systemMessagesSlice';
+import messagePanelReducer from './message-panel/messagePanelSlice';
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +24,8 @@ export const store = configureStore({
         friends: friendsReducer,
         rateLimit: rateLimitReducer,
         settings: settingsReducer,
+        systemMessages: systemMessageReducer,
+        messagePanel: messagePanelReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),

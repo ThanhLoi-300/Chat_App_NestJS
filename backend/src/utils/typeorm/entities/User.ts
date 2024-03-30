@@ -12,7 +12,7 @@ import { Group } from './Group';
 import { Message } from './Message';
 // import { Peer } from './Peer';
 import { Profile } from './Profile';
-// import { UserPresence } from './UserPresence';
+import { UserPresence } from './UserPresence';
 
 @Entity({ name: 'users' })
 export class User {
@@ -40,9 +40,9 @@ export class User {
   @JoinColumn()
   profile: Profile;
 
-//   @OneToOne(() => UserPresence, { cascade: ['insert', 'update'] })
-//   @JoinColumn()
-//   presence: UserPresence;
+  @OneToOne(() => UserPresence, { cascade: ['insert', 'update'] })
+  @JoinColumn()
+  presence: UserPresence;
 
 //   @OneToOne(() => Peer, (peer) => peer.user, {
 //     cascade: ['insert', 'remove', 'update'],

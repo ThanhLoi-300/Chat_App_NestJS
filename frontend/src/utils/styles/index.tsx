@@ -110,7 +110,7 @@ export const ConversationChannelPageStyle = styled.div`
   width: 100%;
   overflow: hidden;
   @media (max-width: 800px) {
-    width: calc(70% - 100px);
+    width: calc(100% - 100px);
     left: 270px;
   }
 `;
@@ -126,13 +126,21 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
   padding: 20px 32px;
   box-sizing: border-box;
   width: 100%;
+  background-color: ${({ selected, theme }) =>
+    selected && theme.conversationSidebar.conversationItem.selected};
   cursor: pointer;
   transition: 100ms background-color ease;
+
+  &:hover {
+    background-color: ${({ theme }) =>
+    theme.conversationSidebar.conversationItem.hover.backgroundColor};
+  }
 
   & .title {
     display: block;
     font-weight: 600;
     font-size: 16px;
+    color: ${({ theme }) => theme.text.primary};
   }
 `;
 
@@ -148,11 +156,15 @@ export const ConversationSidebarItemDetails = styled.div`
     display: block;
     font-weight: 600;
     font-size: 16px;
+    color: ${({ theme }) =>
+    theme.conversationSidebar.conversationItem.title.color};
   }
   & .conversationLastMessage {
     font-size: 15px;
     font-weight: 500;
     color: #868686;
+    color: ${({ theme }) =>
+    theme.conversationSidebar.conversationItem.title.lastMessageColor};
   }
 `;
 
@@ -223,6 +235,7 @@ export const MessagePanelStyle = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
+  background-color: ${({ theme }) => theme.messagePanel.backgroundColor};
 `;
 
 export const MessagePanelHeaderStyle = styled.header`
@@ -235,6 +248,7 @@ export const MessagePanelHeaderStyle = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: ${({ theme }) => theme.messagePanel.header.title};
 `;
 
 export const MessagePanelBody = styled.div`
@@ -296,17 +310,23 @@ export const MessageContainerStyle = styled.div`
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 8px;
+  &::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.background.primary};
   }
   &::-webkit-scrollbar-thumb {
-    width: 5px;
+    background-color: ${({ theme }) => theme.background.secondary};
+    width: 1px;
     border-radius: 20px;
+  }
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
 export const MessageInputContainer = styled.div<MessageInputContainerProps>`
   box-sizing: border-box;
+  background-color: ${({ theme }) =>
+    theme.messagePanel.inputContainer.backgroundColor};
   border-radius: 5px;
   width: 100%;
   padding: 18px 32px;
@@ -384,6 +404,7 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   white-space: pre-wrap;
   display: flex;
   justify-content: ${({ owner }) => (owner ? 'flex-end' : 'flex-start')};
+  color: ${({ theme }) => theme.messagePanel.body.content.color};
 `;
 
 export const ContextMenu = styled.ul<ContextMenuProps>`
@@ -423,6 +444,7 @@ export const MessageTypingStatus = styled.div`
   box-sizing: border-box;
   margin-top: 10px;
   height: 20px;
+  color: ${({ theme }) => theme.text.secondary};
 `;
 
 export const EditMessageInputField = styled.input`
@@ -639,7 +661,7 @@ export const LayoutPage = styled.div`
 
 export const UserSidebarStyle = styled.div`
   height: 100%;
-
+  background-color: ${({ theme }) => theme.userSidebar.backgroundColor};
   display: flex;
   flex: 0 0 80px;
   align-items: center;
@@ -656,7 +678,7 @@ export const SidebarStyle = styled.div`
   width: ${SIDEBAR_WIDTH}px;
   height: 100%;
   left: 70px;
-
+  background-color: ${({ theme }) => theme.conversationSidebar.backgroundColor};
   flex: 0 0 auto;
   @media (max-width: 800px) {
     width: calc(80% - 100px);
@@ -708,8 +730,6 @@ export const UserSidebarFooter = styled.footer`
 `;
 
 export const ConversationSearchbar = styled.input`
-  background-color: aqua;
-  color: aliceblue;
   width: 100%;
   padding: 10px 16px;
   border: none;
@@ -718,6 +738,8 @@ export const ConversationSearchbar = styled.input`
   font-family: 'Inter';
   border-radius: 5px;
   box-sizing: border-box;
+  background-color: ${({ theme }) => theme.input.backgroundColor};
+  color: ${({ theme }) => theme.input.color};
 `;
 
 export const ConversationTabContainer = styled.div``;
@@ -759,6 +781,7 @@ export const GroupRecipientsSidebarStyle = styled.aside`
   height: 100%;
   width: 350px;
   flex: 0 0 auto;
+  background-color: ${({ theme }) => theme.background.secondary};
 `;
 
 export const GroupRecipientsSidebarHeader = styled.div`
@@ -770,6 +793,7 @@ export const GroupRecipientsSidebarHeader = styled.div`
   border-bottom: 1px solid #49494925;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.text.primary};
   gap: 20px;
   & span {
     font-size: 20px;
@@ -782,6 +806,7 @@ export const GroupRecipientSidebarItemContainer = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
+  color: ${({ theme }) => theme.text.primary};
   &::-webkit-scrollbar {
     display: none;
   }
@@ -800,6 +825,7 @@ export const GroupRecipientSidebarItem = styled.div<GroupRecipientSidebarItemPro
   margin: 10px 0;
   & .recipientDetails {
     display: flex;
+    color: ${({ theme }) => theme.text.secondary};
     flex-direction: column;
   }
   & .left {
