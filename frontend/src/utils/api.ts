@@ -2,7 +2,10 @@ import axios, { AxiosRequestConfig } from "axios";
 import { AcceptFriendRequestResponse,CancelFriendRequestResponse, AddGroupRecipientParams, Conversation, ConversationType, CreateConversationParams, CreateGroupParams, CreateUserParams, DeleteGroupMessageParams, DeleteGroupMessageResponse, DeleteMessageParams, DeleteMessageResponse, EditMessagePayload, FetchGroupMessagePayload, FetchMessagePayload, Friend, FriendRequest, Group, GroupMessageType, MessageType, RemoveGroupRecipientParams, UpdateGroupDetailsPayload, UpdateGroupOwnerParams, UpdateStatusParams, User, UserCredentialsParams} from "./types";
 
 const API_URL = "http://localhost:3001/api";
-const config: AxiosRequestConfig = { withCredentials: true };
+const token = localStorage.getItem('accessToken');
+const config: AxiosRequestConfig = { headers: {
+                                      authorization: `Bearer ${token}`,
+                                    }, };
 const axiosClient = axios.create({ baseURL: API_URL });
 
 export const postRegisterUser = async (data: CreateUserParams) =>
@@ -13,7 +16,7 @@ export const postLoginUser = (data: UserCredentialsParams) =>
     
 export const logoutUser = () => axiosClient.post('/auth/logout', {}, config);
 
-export const getAuthUser = () => axiosClient.get<User>(`/auth/status`, config);
+export const getUser = () => axiosClient.get<User>(`/users`, config);
 
 export const searchUsers = (query: string) =>
   axiosClient.get<User[]>(`/users/search?query=${query}`, config);

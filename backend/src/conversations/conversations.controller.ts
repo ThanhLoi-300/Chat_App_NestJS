@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Req } from '@nestjs/common';
 import { Routes, Services } from 'src/utils/constants';
 import { IConversationsService } from './conversation';
 import { CreateConversationDto } from './dtos/CreateConversation';
 import { AuthUser } from '../utils/decorators';
 import { User } from 'src/utils/typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { AuthenticatedRequest } from 'src/utils/types';
 
 @Controller(Routes.CONVERSATIONS)
 export class ConversationsController {
@@ -23,8 +24,8 @@ export class ConversationsController {
     }
 
     @Get()
-    async getConversations(@AuthUser() { id }: User) {
-        return this.conversationsService.getConversations(id);
+    async getConversations(@Req() req: AuthenticatedRequest) {
+        return this.conversationsService.getConversations(req.userId);
     }
 
     @Get(':id')

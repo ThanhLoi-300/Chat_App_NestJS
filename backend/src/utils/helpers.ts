@@ -20,7 +20,7 @@ export function isAuthorized(
   next: NextFunction,
 ) {
   console.log('isAuthorized');
-  if (req.user) next();
+  if (req.userId) next();
   else throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
 }
 

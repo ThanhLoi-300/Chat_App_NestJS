@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
@@ -15,6 +16,7 @@ import { Routes, ServerEvents, Services } from '../utils/constants';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
 import { IFriendRequestService } from '../friends-request/friends-request';
+import { AuthenticatedRequest } from 'src/utils/types';
 
 @Controller(Routes.FRIEND_REQUESTS)
 export class FriendRequestController {
@@ -25,8 +27,8 @@ export class FriendRequestController {
   ) {}
 
   @Get()
-  getFriendRequests(@AuthUser() user: User) {
-    return this.friendRequestService.getFriendRequests(user.id);
+  getFriendRequests(@Req() req: AuthenticatedRequest) {
+    return this.friendRequestService.getFriendRequests(req.userId);
   }
 
   @Throttle(3, 10)

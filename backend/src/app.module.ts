@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -14,11 +14,17 @@ import { PusherHelper } from './utils/PusherHelper';
 import { FriendsModule } from './friends/friends.module';
 import { FriendRequestsModule } from './friends-request/friends-request.module';
 import { ExistsModule } from './exists/exists.module';
+import { JwtMiddleware } from './auth/JwtMiddleware';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env.development' }),
-    PassportModule.register({session: true}),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: 'helloworld',
+      signOptions: { expiresIn: '1d' },
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_DB_HOST,
@@ -41,7 +47,13 @@ import { ExistsModule } from './exists/exists.module';
     ExistsModule,
   ],
   controllers: [],
-  providers: [PusherHelper],
-  exports: [PusherHelper],
+  providers: [PusherHelper, JwtModule],
+  exports: [PusherHelper, JwtModule],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(JwtMiddleware)
+      .forRoutes('*');
+  }
+}

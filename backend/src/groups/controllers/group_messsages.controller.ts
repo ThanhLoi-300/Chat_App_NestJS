@@ -12,6 +12,7 @@ import {
   UploadedFiles,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -21,10 +22,11 @@ import { EditMessageDto } from '../../messages/dtos/EditMessageDto';
 import { Routes, Services } from '../../utils/constants';
 import { AuthUser } from '../../utils/decorators';
 import { User } from '../../utils/typeorm';
-import { Attachment } from '../../utils/types';
+import { Attachment, AuthenticatedRequest } from '../../utils/types';
 import { IGroupMessageService } from '../interfaces/group-messages';
 import { PusherHelper } from 'src/utils/PusherHelper';
 import Pusher from 'pusher';
+import { IUserService } from 'src/users/interfaces/user';
 
 @Controller(Routes.GROUP_MESSAGES)
 export class GroupMessageController {
@@ -33,6 +35,7 @@ export class GroupMessageController {
     private readonly groupMessageService: IGroupMessageService,
     private readonly eventEmitter: EventEmitter2,
     @Inject(PusherHelper) private pusherHelper: PusherHelper,
+    @Inject(Services.USERS) private readonly userService: IUserService
   ) {}
 
   @Throttle(5, 10)
@@ -46,7 +49,7 @@ export class GroupMessageController {
   )
   @Post()
   async createGroupMessage(
-    @AuthUser() user: User,
+    @Req() req: AuthenticatedRequest,
     @UploadedFiles() { attachments }: { attachments: Attachment[] },
     @Param('id', ParseIntPipe) id: number,
     @Body() { content }: CreateMessageDto,
@@ -54,6 +57,8 @@ export class GroupMessageController {
     console.log(`Creating Group Message for ${id}`);
     if (!attachments && !content) throw new HttpException('Message must contain content or at least 1 attachment',
       HttpStatus.BAD_REQUEST,);
+    
+    const user = await this.userService.findUser({id: req.userId})
     const params = { groupId: id, author: user, content, attachments };
     const response = await this.groupMessageService.createGroupMessage(params);
 

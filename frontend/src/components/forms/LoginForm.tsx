@@ -22,7 +22,8 @@ const LoginForm = () => {
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await postLoginUser(info);
+            const response = await postLoginUser(info);
+            localStorage.setItem('accessToken', response.data.access_token);
             navigate('/conversations');
         } catch (err) {
             console.log(err);

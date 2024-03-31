@@ -3,19 +3,43 @@ import { UsersModule } from 'src/users/users.module';
 import { Services } from 'src/utils/constants';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './utils/LocalStrategy';
-import { SessionSerializer } from './utils/SessionSerializer';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/utils/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { SessionManager } from './Session';
+import { JwtStrategy } from './jwt.strategy';
+import { JwtMiddleware } from './JwtMiddleware';
 
 @Module({
-  imports: [UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    UsersModule,
+    JwtModule.register({
+      secret: 'helloworld',
+      signOptions: { expiresIn: '1d' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [
-    LocalStrategy,
-    SessionSerializer,
+    JwtStrategy,
     {
       provide: Services.AUTH,
       useClass: AuthService,
     },
+    {
+      provide: Services.PUSHER_SESSION,
+      useClass: SessionManager,
+    },
   ],
+  exports: [
+    {
+      provide: Services.PUSHER_SESSION,
+      useClass: SessionManager,
+    },
+    {
+      provide: Services.AUTH,
+      useClass: AuthService,
+    },
+  ]
 })
 export class AuthModule {}

@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -16,7 +17,7 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { Routes, Services } from '../../utils/constants';
 import { AuthUser } from '../../utils/decorators';
 import { User } from '../../utils/typeorm';
-import { Attachment } from '../../utils/types';
+import { Attachment, AuthenticatedRequest } from '../../utils/types';
 import { CreateGroupDto } from '../dtos/CreateGroupDto';
 import { TransferOwnerDto } from '../dtos/TransferOwnerDto';
 import { UpdateGroupDetailsDto } from '../dtos/UpdateGroupDetailsDto';
@@ -41,12 +42,12 @@ export class GroupController {
   }
 
   @Get()
-  getGroups(@AuthUser() user: User) {
-    return this.groupService.getGroups({ userId: user.id });
+  getGroups(@Req() req: AuthenticatedRequest) {
+    return this.groupService.getGroups({ userId: req.userId });
   }
 
   @Get(':id')
-  getGroup(@AuthUser() user: User, @Param('id') id: number) {
+  getGroup(@Req() req: AuthenticatedRequest, @Param('id') id: number) {
     return this.groupService.findGroupById(id);
   }
 

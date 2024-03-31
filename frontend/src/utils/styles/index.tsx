@@ -345,7 +345,7 @@ export const MessageInput = styled.input`
   background-color: inherit;
   outline: none;
   border: none;
-  color: #454545;
+  color: white;
   font-family: 'Inter';
   box-sizing: border-box;
   font-size: 18px;

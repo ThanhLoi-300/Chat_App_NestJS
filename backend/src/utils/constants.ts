@@ -6,7 +6,6 @@ export enum Routes {
   USERS_PROFILES = 'users/profiles',
   CONVERSATIONS = 'conversations',
   MESSAGES = 'conversations/:id/messages',
-  // MESSAGES = 'messages',
   GROUPS = 'groups',
   GROUP_MESSAGES = 'groups/:id/messages',
   GROUP_RECIPIENTS = 'groups/:id/recipients',
@@ -14,6 +13,7 @@ export enum Routes {
   FRIENDS = 'friends',
   FRIEND_REQUESTS = 'friends/requests',
   USER_PRESENCE = 'users/presence',
+  PUSHER_SESSION = 'pusher'
 }
 
 export enum Services {
@@ -32,6 +32,7 @@ export enum Services {
   FRIENDS_REQUESTS_SERVICE = 'FRIEND_REQUEST_SERVICE',
   SPACES_CLIENT = 'SPACES_CLIENT',
   IMAGE_UPLOAD_SERVICE = 'IMAGE_UPLOAD_SERVICE',
+  PUSHER_SESSION = 'PUSHER_SESSION'
 }
 
 export enum ServerEvents {

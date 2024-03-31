@@ -7,6 +7,7 @@ import { Conversation, Message } from 'src/utils/typeorm';
 import { UsersModule } from 'src/users/users.module';
 import { isAuthorized } from 'src/utils/helpers';
 import { ConversationMiddleware } from './middlewares/conversation.middleware';
+import { JwtMiddleware } from 'src/auth/JwtMiddleware';
 
 @Module({
   imports: [
