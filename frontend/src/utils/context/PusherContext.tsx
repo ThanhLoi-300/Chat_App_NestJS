@@ -1,28 +1,38 @@
 import Pusher from 'pusher-js';
-import React, { createContext, FC } from 'react';
 
-// const pusher = new Pusher('00806514f90cf476dcd8', {
-//   cluster: 'ap1',
-// });
+export class PusherManager {
+  public static isConnected: boolean = false;
+  public static pusher: Pusher | null = null;
 
-// export default pusher
+  public static connectToPusher(): void {
+    if (!this.isConnected) {
+      this.pusher = new Pusher('00806514f90cf476dcd8', {
+        cluster: 'ap1',
+      });
 
-// export const PusherContext = createContext(pusher)
+      this.isConnected = true;
+    }
+  }
 
-export const PusherContext = createContext<Pusher | null>(null);
+  public static disconnectFromPusher(): void {
+    if (this.isConnected && this.pusher) {
+      this.pusher.disconnect();
+      this.isConnected = false;
+    }
+  }
 
-interface PusherProviderProps {
-  children: React.ReactNode;
+  public static subscribeToEvent(channelId: string, eventName: string, callback: Function): void {
+    if (this.isConnected && this.pusher) {
+      this.pusher.subscribe(channelId).bind(eventName, callback);
+    }
+  }
 }
 
-export const PusherProvider: FC<PusherProviderProps> = ({ children }) => {
-  const pusher = new Pusher('00806514f90cf476dcd8', {
-    cluster: 'ap1',
-  });
+// // Sử dụng PusherManager
+// const pusherManager = new PusherManager();
+// pusherManager.connectToPusher();
+// // ...
+// // Thực hiện công việc với kết nối Pusher đã có
+// // ...
+// pusherManager.disconnectFromPusher();
 
-  return (
-    <PusherContext.Provider value={pusher}>
-      {children}
-    </PusherContext.Provider>
-  );
-};

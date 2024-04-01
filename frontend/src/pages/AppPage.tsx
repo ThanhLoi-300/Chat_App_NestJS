@@ -17,6 +17,7 @@ import { ThemeProvider } from 'styled-components';
 import { DarkTheme, LightTheme } from '../utils/themes';
 // import Peer from 'peerjs';
 import { AuthContext } from '../utils/context/AuthContext';
+import { PusherManager } from '../utils/context/PusherContext';
 // import {
 //     setCall,
 //     setLocalStream,

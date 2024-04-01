@@ -42,11 +42,7 @@ export class GroupMessageService implements IGroupMessageService {
       content,
       group,
       author: instanceToPlain(author),
-    //   attachments: params.attachments
-    //     ? await this.messageAttachmentsService.createGroupAttachments(
-    //         params.attachments,
-    //       )
-    //     : [],
+      attachments: params.attachments
     });
     const savedMessage = await this.groupMessageRepository.save(groupMessage);
     group.lastMessageSent = savedMessage;

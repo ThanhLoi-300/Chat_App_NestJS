@@ -24,6 +24,8 @@ import { MessagePanelHeader } from './MessagePanelHeader';
 import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer';
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
+import { uploadFile, uploadFiles } from '../../utils/uploadFile';
+import { CreateMessageParams1 } from '../../utils/types';
 
 type Props = {
     sendTypingStatus: () => void;
@@ -68,14 +70,21 @@ export const MessagePanel: FC<Props> = ({
         const trimmedContent = content.trim();
         if (!routeId) return;
         if (!trimmedContent && !attachments.length) return;
+
+        
         const formData = new FormData();
         formData.append('id', routeId);
         trimmedContent && formData.append('content', trimmedContent);
-        attachments.forEach((attachment) =>
-            formData.append('attachments', attachment.file)
-        );
+
+        const fb: string[] = await uploadFiles(attachments.map(attachment => attachment.file))
+
+        const data: CreateMessageParams1 = {
+            id: Number(routeId),
+            content: trimmedContent,
+            attachments: fb
+        }
         try {
-            await createMessage(routeId, selectedType, formData);
+            await createMessage(routeId, selectedType, data);
             setContent('');
             dispatch(removeAllAttachments());
             dispatch(clearAllMessages());
@@ -106,7 +115,7 @@ export const MessagePanel: FC<Props> = ({
     return (
         <>
             <MessagePanelStyle>
-                <MessagePanelHeader/>
+                <MessagePanelHeader />
                 <MessagePanelBody>
                     <MessageContainer />
                 </MessagePanelBody>

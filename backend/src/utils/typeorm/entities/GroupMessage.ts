@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseMessage } from './BaseMessage';
 import { Group } from './Group';
 import { GroupMessageAttachment } from './GroupMessageAttachment';
@@ -9,7 +9,9 @@ export class GroupMessage extends BaseMessage {
   @ManyToOne(() => Group, (group) => group.messages)
   group: Group;
 
-  @OneToMany(() => GroupMessageAttachment, (attachment) => attachment.message)
-  @JoinColumn()
-  attachments?: MessageAttachment[];
+  // @OneToMany(() => GroupMessageAttachment, (attachment) => attachment.message)
+  // @JoinColumn()
+  // attachments?: MessageAttachment[];
+  @Column({ type: 'json', nullable: true })
+  attachments?: string[];
 }

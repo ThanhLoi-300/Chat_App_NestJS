@@ -2,10 +2,10 @@ import { CirclePlusFill } from 'akar-icons';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-// import {
-//     addAttachment,
-//     incrementAttachmentCounter,
-// } from '../../store/message-panel/messagePanelSlice';
+import {
+    addAttachment,
+    incrementAttachmentCounter,
+} from '../../store/message-panel/messagePanelSlice';
 // import { useToast } from '../../utils/hooks/useToast';
 import { FileInput } from '../../utils/styles/inputs/Textarea';
 import { DivMouseEvent, InputChangeEvent } from '../../utils/types';
@@ -16,9 +16,9 @@ export const MessageAttachmentActionIcon = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch<AppDispatch>();
     // const { error } = useToast({ theme: 'dark' });
-    // const { attachmentCounter, attachments } = useSelector(
-    //     (state: RootState) => state.messagePanel
-    // );
+    const { attachmentCounter, attachments } = useSelector(
+        (state: RootState) => state.messagePanel
+    );
 
     const onClick = (e: DivMouseEvent) => {
         console.log('on click');
@@ -28,16 +28,16 @@ export const MessageAttachmentActionIcon = () => {
     const onChange = (e: InputChangeEvent) => {
         const { files } = e.target;
         if (!files) return;
-        // const maxFilesDropped = 5 - attachments.length;
+        const maxFilesDropped = 5 - attachments.length;
         // if (maxFilesDropped === 0) return error('Max files reached');
         const filesArray = Array.from(files);
-        // let localCounter = attachmentCounter;
-        // for (let i = 0; i < filesArray.length; i++) {
-        //     console.log(filesArray[i]);
-        //     if (i === maxFilesDropped) break;
-        //     dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
-        //     dispatch(incrementAttachmentCounter());
-        // }
+        let localCounter = attachmentCounter;
+        for (let i = 0; i < filesArray.length; i++) {
+            console.log(filesArray[i]);
+            if (i === maxFilesDropped) break;
+            dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
+            dispatch(incrementAttachmentCounter());
+        }
     };
 
     return (

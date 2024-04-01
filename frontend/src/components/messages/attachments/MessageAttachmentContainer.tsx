@@ -1,4 +1,3 @@
-import { useRef, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import {
@@ -8,14 +7,14 @@ import {
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import { MessageImageCanvas } from './MessageImageCanvas';
 import { Attachment } from '../../../utils/types';
-// import { removeAttachment } from '../../../store/message-panel/messagePanelSlice';
+import { removeAttachment } from '../../../store/message-panel/messagePanelSlice';
 
 export const MessageAttachmentContainer = () => {
-    // const { attachments } = useSelector((state: RootState) => state.messagePanel);
+    const { attachments } = useSelector((state: RootState) => state.messagePanel);
     const dispatch = useDispatch<AppDispatch>();
-    const attachments: Attachment[] = []
+
     const onDeleteAttachment = (attachment: Attachment) => {
-        //dispatch(removeAttachment(attachment));
+        dispatch(removeAttachment(attachment));
     };
 
     return (
