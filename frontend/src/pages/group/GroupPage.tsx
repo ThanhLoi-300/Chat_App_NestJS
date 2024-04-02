@@ -23,7 +23,6 @@ import {
 } from '../../utils/types';
 import Pusher from 'pusher-js';
 import { toast } from 'react-toastify';
-import { PusherContext } from '../../utils/context/PusherContext';
 
 export const GroupPage = () => {
   const { id } = useParams();

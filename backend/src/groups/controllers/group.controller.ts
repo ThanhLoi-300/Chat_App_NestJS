@@ -22,17 +22,20 @@ import { CreateGroupDto } from '../dtos/CreateGroupDto';
 import { TransferOwnerDto } from '../dtos/TransferOwnerDto';
 import { UpdateGroupDetailsDto } from '../dtos/UpdateGroupDetailsDto';
 import { IGroupService } from '../interfaces/group';
+import { IUserService } from 'src/users/interfaces/user';
 
 @SkipThrottle()
 @Controller(Routes.GROUPS)
 export class GroupController {
   constructor(
     @Inject(Services.GROUPS) private readonly groupService: IGroupService,
+    @Inject(Services.USERS) private readonly userService: IUserService,
     private eventEmitter: EventEmitter2,
   ) {}
 
   @Post()
-  async createGroup(@AuthUser() user: User, @Body() payload: CreateGroupDto) {
+  async createGroup(@Req() req: AuthenticatedRequest, @Body() payload: CreateGroupDto) {
+    const user: User = await this.userService.findUser({ id: req.userId });
     const group = await this.groupService.createGroup({
       ...payload,
       creator: user,

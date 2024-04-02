@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/hooks/useAuth';
+import { toast } from 'react-toastify';
 
 export const AuthenticatedRoute: FC<React.PropsWithChildren> = ({
     children,
@@ -12,5 +13,7 @@ export const AuthenticatedRoute: FC<React.PropsWithChildren> = ({
         return <div>loading</div>;
     }
     if (user) return <>{children}</>;
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    else {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
 };

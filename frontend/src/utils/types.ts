@@ -58,7 +58,7 @@ export type MessageType = {
   createdAt: string;
   author: User;
   conversation: Conversation;
-  attachments?: MessageAttachment[];
+  attachments?: string[];
 };
 
 export type GroupMessageType = {
@@ -67,7 +67,7 @@ export type GroupMessageType = {
   createdAt: string;
   author: User;
   group: Group;
-  attachments?: MessageAttachment[];
+  attachments?: string[];
 };
 
 export type FetchMessagePayload = {
@@ -88,6 +88,12 @@ export type MessageEventPayload = {
 export type CreateMessageParams = {
   id: number;
   content: string;
+};
+
+export type CreateMessageParams1 = {
+  id: number;
+  content: string;
+  attachments?: string[]
 };
 
 export type ConversationMessage = {

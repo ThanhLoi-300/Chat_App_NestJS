@@ -1,20 +1,30 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { AcceptFriendRequestResponse,CancelFriendRequestResponse, AddGroupRecipientParams, Conversation, ConversationType, CreateConversationParams, CreateGroupParams, CreateUserParams, DeleteGroupMessageParams, DeleteGroupMessageResponse, DeleteMessageParams, DeleteMessageResponse, EditMessagePayload, FetchGroupMessagePayload, FetchMessagePayload, Friend, FriendRequest, Group, GroupMessageType, MessageType, RemoveGroupRecipientParams, UpdateGroupDetailsPayload, UpdateGroupOwnerParams, UpdateStatusParams, User, UserCredentialsParams} from "./types";
+import axios from "axios";
+import { AcceptFriendRequestResponse,CancelFriendRequestResponse, AddGroupRecipientParams, Conversation, ConversationType, CreateConversationParams, CreateGroupParams, CreateUserParams, DeleteGroupMessageParams, DeleteGroupMessageResponse, DeleteMessageParams, DeleteMessageResponse, EditMessagePayload, FetchGroupMessagePayload, FetchMessagePayload, Friend, FriendRequest, Group, GroupMessageType, MessageType, RemoveGroupRecipientParams, UpdateGroupDetailsPayload, UpdateGroupOwnerParams, UpdateStatusParams, User, UserCredentialsParams, CreateMessageParams1} from "./types";
 
 const API_URL = "http://localhost:3001/api";
-const token = localStorage.getItem('accessToken');
-const config: AxiosRequestConfig = { headers: {
-                                      authorization: `Bearer ${token}`,
-                                    }, };
+
+let config = {
+  headers: {
+    authorization: ''
+  }
+}
+                                    
+export const updateToken = () => {
+  const token = window.localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.authorization = `Bearer ${token}`;
+  }
+};
+
 const axiosClient = axios.create({ baseURL: API_URL });
 
 export const postRegisterUser = async (data: CreateUserParams) =>
-  axiosClient.post("/auth/register", data, config);
+  axiosClient.post("/auth/register", data);
   
 export const postLoginUser = (data: UserCredentialsParams) =>
-  axiosClient.post(`/auth/login`, data, config);
+  axiosClient.post(`/auth/login`, data);
     
-export const logoutUser = () => axiosClient.post('/auth/logout', {}, config);
+export const logoutUser = () => axiosClient.post('/auth/logout', config);
 
 export const getUser = () => axiosClient.get<User>(`/users`, config);
 
@@ -33,12 +43,10 @@ export const getConversationMessages = (conversationId: number) =>
     config
   );
 
-export const createMessage = ( id: string, type: ConversationType, data: FormData ) => {
+export const createMessage = ( id: string, type: ConversationType, data: CreateMessageParams1 ) => {
   const url = type === 'private' ? `/conversations/${id}/messages` : `/groups/${id}/messages`;
-  return axiosClient.post(url, data, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    ...config,
-  });
+  console.log(data)
+  return axiosClient.post(url, data, config);
 };
 
 export const postNewConversation = (data: CreateConversationParams) =>
