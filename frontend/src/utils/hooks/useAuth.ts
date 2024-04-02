@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { getUser, updateToken } from '../api';
+import { getUser } from '../api';
 import { AuthContext } from '../context/AuthContext';
 
 export function useAuth() {
@@ -8,7 +8,6 @@ export function useAuth() {
   const controller = new AbortController();
 
   useEffect(() => {
-    updateToken()
     getUser()
       .then(({ data }) => {
         console.log("data: "+ JSON.stringify(data))

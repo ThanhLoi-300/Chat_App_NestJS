@@ -8,6 +8,7 @@ import { User } from 'src/utils/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { SessionManager } from './Session';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtMiddleware } from './JwtMiddleware';
 
 @Module({
   imports: [

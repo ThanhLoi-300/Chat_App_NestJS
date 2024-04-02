@@ -38,16 +38,26 @@ export class GroupMessageController {
     @Inject(Services.USERS) private readonly userService: IUserService
   ) {}
 
+  @Throttle(5, 10)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      {
+        name: 'attachments',
+        maxCount: 5,
+      },
+    ]),
+  )
   @Post()
   async createGroupMessage(
     @Req() req: AuthenticatedRequest,
+    @UploadedFiles() { attachments }: { attachments: Attachment[] },
     @Param('id', ParseIntPipe) id: number,
-    @Body() { content, attachments }: CreateMessageDto,
+    @Body() { content }: CreateMessageDto,
   ) {
     console.log(`Creating Group Message for ${id}`);
-    // if (!attachments && !content) throw new HttpException('Message must contain content or at least 1 attachment',
-    //   HttpStatus.BAD_REQUEST,);
-
+    if (!attachments && !content) throw new HttpException('Message must contain content or at least 1 attachment',
+      HttpStatus.BAD_REQUEST,);
+    
     const user = await this.userService.findUser({id: req.userId})
     const params = { groupId: id, author: user, content, attachments };
     const response = await this.groupMessageService.createGroupMessage(params);

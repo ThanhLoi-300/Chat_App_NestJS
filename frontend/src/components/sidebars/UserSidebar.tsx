@@ -11,8 +11,8 @@ import { AuthContext } from '../../utils/context/AuthContext';
 import { UpdatePresenceStatusModal } from '../modals/UpdatePresenceStatusModal';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { UserAvatar } from '../users/UserAvatar';
+import { logoutUser as logoutUserAPI } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
-import { updateToken, logoutUser as logoutUserAPI } from '../../utils/api';
 
 export const UserSidebar = () => {
     const [showModal, setShowModal] = useState(false);
@@ -20,10 +20,7 @@ export const UserSidebar = () => {
     const navigate = useNavigate();
 
     const logoutUser = () => {
-        updateToken()
-        logoutUserAPI()
-        localStorage.removeItem('accessToken');
-        navigate('/login', { replace: true })
+        logoutUserAPI().finally(() => navigate('/login', { replace: true }));
     };
 
     return (

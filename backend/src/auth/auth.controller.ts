@@ -20,8 +20,6 @@ import { ISessionManager } from './Session';
 import { LoginUserDto } from './dtos/LoginUserDto';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/utils/typeorm';
-import * as crypto from 'crypto';
-import { AuthenticatedRequest } from 'src/utils/types';
 
 @Controller(Routes.AUTH)
 export class AuthController {
@@ -43,8 +41,6 @@ export class AuthController {
     try {
       const user: User = await this.authService.validateUser(infoLogin);
       const accessToken = this.jwtService.sign({ id: user.id });
-      this.sessions.setUserPusher(user)
-      console.log(this.sessions.getPushers.length)
       return { access_token: accessToken };
     } catch (error) {
       throw new Error('Invalid credentials');
@@ -58,8 +54,5 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(@Req() req: AuthenticatedRequest,) {
-    this.sessions.removeUserPusher(req.userId)
-    console.log(this.sessions.getPushers.length)
-  }
+  logout() {}
 }

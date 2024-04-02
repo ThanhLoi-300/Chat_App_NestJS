@@ -2,16 +2,17 @@ import { MessageTextarea } from '../../utils/styles/inputs/Textarea';
 import { FC, Dispatch, SetStateAction, useRef } from 'react';
 import { ClipboardEvent, DragEvent } from '../../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    addAttachment,
-    incrementAttachmentCounter,
-} from '../../store/message-panel/messagePanelSlice';
+// import {
+//     addAttachment,
+//     incrementAttachmentCounter,
+// } from '../../store/message-panel/messagePanelSlice';
 import { RootState } from '../../store';
-import { toast } from 'react-toastify';
+// import { useToast } from '../../utils/hooks/useToast';
 
 type Props = {
     message: string;
     setMessage: Dispatch<SetStateAction<string>>;
+    maxLength: number;
     setIsMultiLine: Dispatch<SetStateAction<boolean>>;
     sendTypingStatus: () => void;
     sendMessage: () => void;
@@ -20,6 +21,7 @@ type Props = {
 export const MessageTextField: FC<Props> = ({
     message,
     setMessage,
+    maxLength,
     setIsMultiLine,
     sendTypingStatus,
     sendMessage,
@@ -27,9 +29,10 @@ export const MessageTextField: FC<Props> = ({
     const DEFAULT_TEXTAREA_HEIGHT = 21;
     const ref = useRef<HTMLTextAreaElement>(null);
     const dispatch = useDispatch();
-    const { attachments, attachmentCounter } = useSelector(
-        (state: RootState) => state.messagePanel
-    );
+    // const { error } = useToast({ theme: 'dark' });
+    // const { attachments, attachmentCounter } = useSelector(
+    //     (state: RootState) => state.messagePanel
+    // );
 
     const onMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.preventDefault();
@@ -56,16 +59,16 @@ export const MessageTextField: FC<Props> = ({
     };
 
     const handleFileAdd = (files: FileList) => {
-        const maxFilesDropped = 5 - attachments.length;
-        if (maxFilesDropped === 0) return toast.error('Max files reached');
-        const filesArray = Array.from(files);
-        let localCounter = attachmentCounter;
-        for (let i = 0; i < filesArray.length; i++) {
-            console.log(filesArray[i]);
-            if (i === maxFilesDropped) break;
-            dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
-            dispatch(incrementAttachmentCounter());
-        }
+        // const maxFilesDropped = 5 - attachments.length;
+        // if (maxFilesDropped === 0) return error('Max files reached');
+        // const filesArray = Array.from(files);
+        // let localCounter = attachmentCounter;
+        // for (let i = 0; i < filesArray.length; i++) {
+        //     console.log(filesArray[i]);
+        //     if (i === maxFilesDropped) break;
+        //     dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
+        //     dispatch(incrementAttachmentCounter());
+        // }
     };
 
     const onDrop = (e: DragEvent) => {
@@ -88,6 +91,7 @@ export const MessageTextField: FC<Props> = ({
             value={message}
             onChange={onMessageChange}
             placeholder="Send a Message"
+            maxLength={maxLength}
             onKeyDown={onKeyDown}
             onDrop={onDrop}
             onPaste={onPaste}

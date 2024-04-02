@@ -22,7 +22,7 @@ export const MessageItemContainerBody: FC<Props> = ({
     const { isEditingMessage, messageBeingEdited } = useSelector(
         (state: RootState) => state.messageContainer
     );
-
+    
     return (
         <>
             {isEditingMessage && message.id === messageBeingEdited?.id ? (
@@ -30,18 +30,10 @@ export const MessageItemContainerBody: FC<Props> = ({
                     <EditMessageContainer onEditMessageChange={onEditMessageChange} />
                 </MessageItemContent>
             ) : (
-                <>
-                    <MessageItemContent padding={padding} owner={owner}>
-                        {message.content || null}
-                    </MessageItemContent>
-                    {message.attachments?.length === 0 ? null :
-                        (
-                            <MessageItemContent padding={padding} owner={owner}>
-                                <MessageItemAttachmentContainer message={message} />
-                            </MessageItemContent>
-                        )
-                    }
-                </>
+                <MessageItemContent padding={padding} owner={owner }>
+                    {message.content || null}
+                    <MessageItemAttachmentContainer message={message} />
+                </MessageItemContent>
             )}
         </>
     );

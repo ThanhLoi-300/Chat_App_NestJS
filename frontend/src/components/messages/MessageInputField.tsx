@@ -21,7 +21,9 @@ export const MessageInputField: FC<Props> = ({
     sendTypingStatus,
 }) => {
     const ICON_SIZE = 36;
+    const MAX_LENGTH = 2048;
     const [isMultiLine, setIsMultiLine] = useState(false);
+    const atMaxLength = content.length === MAX_LENGTH;
 
     return (
         <>
@@ -31,12 +33,18 @@ export const MessageInputField: FC<Props> = ({
                     <MessageTextField
                         message={content}
                         setMessage={setContent}
+                        maxLength={MAX_LENGTH}
                         setIsMultiLine={setIsMultiLine}
                         sendTypingStatus={sendTypingStatus}
                         sendMessage={sendMessage}
                     />
                 </form>
                 <FaceVeryHappy className={styles.icon} size={ICON_SIZE} />
+                {atMaxLength && (
+                    <CharacterLimit atMaxLength={atMaxLength}>
+                        {`${content.length}/${MAX_LENGTH}`}
+                    </CharacterLimit>
+                )}
             </MessageInputContainer>
         </>
     );
